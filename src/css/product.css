@@ -1,0 +1,142 @@
+.products {
+    display: flex;
+    width: 1520px;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 38px 38px;
+    padding: 0px;
+}
+
+.product * {
+    text-align: left;
+    margin: 0px;
+}
+
+.product {
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+    height: 480px;
+}
+
+.product h1 {
+    order: 1;
+    padding-left: 14px;
+    width: 229px;
+    margin-left: 14px;
+    margin-top: 17px;
+    height: 34px;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 34px;
+    color: #593C1C;
+}
+
+.product img {
+    order: 3;
+    width: 330.45px;
+    height: 320px;
+}
+
+.product p.stock {
+    order: 2;
+    width: 103px;
+    height: 23px;
+    margin-top: 5px;
+    margin-left: 29px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+    color: #C82525;
+}
+
+.product .product_inner {
+    order: 4;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 9px;
+}
+
+.product p.price {
+    order: 4;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 29px;
+    width: 64px;
+    height: 29px;
+    margin-left: 38px;
+    color: #593C1C;
+
+}
+
+.product button {
+    order: 5;
+    margin-left: 73px;
+    width: 150px;
+    height: 50px;
+    text-align: center;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #593C1C;
+}
+
+.product_table tr {
+    display: flex;
+    justify-content: space-around;
+    width: 1597px;
+    height: 150px;
+    align-items: center;
+    background-color: white;
+    box-shadow: 0px 4px 4px rgba(208, 208, 208, 0.25);
+    margin-bottom: 30px;
+}
+
+.product_table tr.product_table_head {
+    height: 75px;
+}
+
+.product_table th {
+    font-weight: 600;
+    font-size: 28px;
+    width: 1597px;
+    color: #593C1C;
+}
+
+.product_table td {
+    color: #919191;
+    font-weight: 600;
+    width: 1597px;
+    font-size: 28px;
+}
+
+.product_table img {
+    width: 126px;
+    height: 122px;
+}
+
+.product_table ul li h2 {
+    text-align: left;
+    font-weight: 600;
+    color: #593C1C;
+    margin-bottom: 35px;
+
+}
+
+.product_table .table_product_rating {
+    color: #FFC700;
+    font-size: 36px;
+}
+
+.product_table .table_product_stock {
+    color: #C82525;
+    font-size: 36px;
+
+}
+
+.product_table caption h2 {
+    font-size: 40px;
+    text-align: left;
+}
