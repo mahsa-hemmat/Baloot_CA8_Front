@@ -26,7 +26,10 @@ class User extends React.Component {
     constructor(props) {
         super(props);
         this.state = { userInfo:{}, pay:false, addCredit:false, history:[], buylist:[] }
-        this.setState({userInfo:fetch("http://localhost:8080/user")})
+        fetch("http://localhost:8080/user").then(res => res.json())
+        .then(data => {
+            this.setState({userInfo:data})
+         })
         this.showPaymentPage=this.showPaymentPage.bind(this);
         this.hidePaymentPage=this.hidePaymentPage.bind(this);
     }
