@@ -30,11 +30,11 @@ function Items(){
     )
 }
 
-function DiscountCode(){
+function DiscountCode(props){
     return(
         <div class="discount_code">
-            <input/>
-            <button class="brown_button">Submit</button>
+            <input onChange={props.handleDiscountCode}/>
+            <button class="brown_button" onClick={props.handleDiscount}>Submit</button>
         </div>
     )
 }
@@ -48,18 +48,29 @@ function TotalCost(){
     )
 }
 
-function SubmitButtons(props){
+function SubmitButtonsCredit(props){
     return(
         <div class="submit_buttons">
 <button type="button" class="close_button" onClick={props.handleClose}>
           Close
         </button>
-            <button class="brown_button">{props.submitMessage}</button>
+            <button class="brown_button" onClick={props.handleCreditIncrease}>{props.submitMessage}</button>
         </div>
     )
 }
 
-export const PaymentPage = ({ handleClose, show, children }) => {
+function SubmitButtonsPayment(props){
+    return(
+        <div class="submit_buttons">
+<button type="button" class="close_button" onClick={props.handleClose}>
+          Close
+        </button>
+            <button class="brown_button" onClick={props.handlePayment}>{props.submitMessage}</button>
+        </div>
+    )
+}
+
+export const PaymentPage = ({ handleClose, show, children, handlePayment, handleDiscount, handleDiscountCode }) => {
   const showHideClassName = show ? "modal display-block" : "modal display-none";
 
   return (
@@ -67,16 +78,16 @@ export const PaymentPage = ({ handleClose, show, children }) => {
       <section class="payment_window modal_window">
         {children}
         <Items/>
-        <DiscountCode/>
+        <DiscountCode handleDiscount={handleDiscount} handleDiscountCode={handleDiscountCode}/>
         <TotalCost/>
-        <SubmitButtons handleClose={handleClose} submitMessage="Buy!"/>
+        <SubmitButtonsPayment handleClose={handleClose} handlePayment={handlePayment} submitMessage="Buy!"/>
         
       </section>
     </div>
   );
 };
 
-export const AddCreditPage = ({ handleClose, show, amount, children }) => {
+export const AddCreditPage = ({ handleClose, show, amount, children, handleCreditIncrease }) => {
     const showHideClassName = show ? "modal display-block" : "modal display-none";
   
     return (
@@ -86,7 +97,7 @@ export const AddCreditPage = ({ handleClose, show, amount, children }) => {
           <p>
             are you sure you want to add {amount} to your account?
           </p>
-          <SubmitButtons handleClose={handleClose} submitMessage="Confirm!"/>
+          <SubmitButtonsCredit handleClose={handleClose} submitMessage="Confirm!" handleCreditIncrease={handleCreditIncrease}/>
           
         </section>
       </div>
