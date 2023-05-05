@@ -22,7 +22,7 @@ function Home_Header(props) {
                         <a href="#" className="dropdown-item" onClick={props.handleSearchByProvider}>provider</a>
                     </div>
                 </div>
-                <input type="text" onChange={props.handleSearchQuery} onKeyDown={props.handleSearch} placeholder="search your product ..." />
+                <input type="text" onChange={props.handleSearchQuery} placeholder="search your product ..." />
                 <div className="img_wrap"><img src="../../assets/search.png"/></div>
             </form>
             <div className="header_right">

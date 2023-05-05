@@ -66,7 +66,10 @@ class Home extends React.Component {
     }
 
     handleSearchQuery=(e)=>{
-        this.setState({searchText:e.target.value})
+        if(e.target.value!="")
+            this.setState({searchText:e.target.value},()=>{this.setState({search:true},()=>{this.getdata();});})
+        else
+            this.setState({search:false},()=>{this.getdata();});
     }
 
     render() {
