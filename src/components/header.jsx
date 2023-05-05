@@ -1,3 +1,6 @@
+import React from 'react';
+
+
 function Logo() {
     return (
         <div className="logo">
@@ -25,24 +28,46 @@ function Home_Header(props) {
                 <input type="text" onChange={props.handleSearchQuery} placeholder="search your product ..." />
                 <div className="img_wrap"><img src="../../assets/search.png"/></div>
             </form>
-            <div className="header_right">
-                <a href="/user">
-                    <p>#username</p>
-                </a>
-                <a className="brown_button" href="/user">Cart 5</a>
-            </div>
+            <UIn/>
         </div>
     );
 }
+
+class UIn extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { username:"" ,data:[]}
+        fetch("http://localhost:8080/user").then(res => res.json())
+        .then(data => {
+            this.setState({username:data.username})
+         })
+         fetch("http://localhost:8080/user/buylist").then(res => res.json())
+        .then(data => {
+            this.setState({data:data})
+         })
+    }
+
+    render(){
+        const cartClass=this.state.data.length>0?"brown_button":"cream_button";
+        return(
+            <div class="header_right">
+                <a href="/user">
+                <p>#{this.state.username}</p>
+                </a>
+                <a class={cartClass} href="user">Cart {this.state.data.length}</a>
+            </div>
+        )
+    }
+}
+
+
 
 export function Default_Header() {
     return (
         <div class="header container-fluid">
             <Logo /> 
-            <div class="header_right">
-                <p>#username</p>
-                <a class="brown_button" href="user">Cart 5</a>
-            </div>
+            
+                <UIn/>
         </div>
     )
 }
