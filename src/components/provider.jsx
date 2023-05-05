@@ -3,12 +3,12 @@ import ProductList from './products';
 import { Footer, Default_Header } from './header';
 import './../css/provider.css'
 
-function ProviderInfo(){
+function ProviderInfo(props){
     return(
         <div class="provider_info">
-        <img src={require("../assets/spa.png")}/>
-        <p>since 1987</p>
-        <h1>Huawei</h1>
+        <img src={props.providerInfo.image}/>
+        <p>since {props.providerInfo.registryDate}</p>
+        <h1>{props.providerInfo.name}</h1>
         </div>
     )
 }
@@ -16,16 +16,26 @@ function ProviderInfo(){
 class Provider extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { userEmail: "", password: "", pay:false, addCredit:false }
+        this.state = { providerInfo:{} , id:"" ,products:[]}
+        console.log(fetch("http://localhost:8080/providers/"+props.param.id+"/commodities"))
+        this.setState({id:props.param.id})
+        fetch("http://localhost:8080/providers/"+props.param.id).then(res => res.json())
+        .then(data => {
+          this.setState({providerInfo:data})
+         })
+        fetch("http://localhost:8080/providers/"+props.param.id+"/commodities").then(res => res.json())
+        .then(data => {
+          this.setState({products:data})
+         })
     }
 
     render() {
         return (
             <body>
                 <Default_Header />
-                <ProviderInfo/>
+                <ProviderInfo providerInfo={this.state.providerInfo}/>
                 <p class="title">All provided commodities</p>
-                <ProductList products={[]}/>
+                <ProductList products={this.state.products}/>
                 <Footer />
             </body>
         )
