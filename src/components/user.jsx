@@ -8,13 +8,13 @@ function UserInfo(props){
     return (
         <div class="user_info shadow_box">
             <ul>
-                <li id="username">Marshal</li>
-                <li id="email">Marshal.Mathers@gmail.com</li>
-                <li id="birth_date">1972/10/17</li>
-                <li id="address">20785 Schultes Avenue, Warren, MI 48091</li>
+                <li id="username">{props.userInfo.username}</li>
+                <li id="email">{props.userInfo.email}</li>
+                <li id="birth_date">{props.userInfo.birthDate}</li>
+                <li id="address">{props.userInfo.address}</li>
             </ul>
             <div class="user_info_right">
-                <h1>$10000000</h1>
+                <h1>${props.userInfo.credit}</h1>
                 <input type="text" placeholder="$Amount" />
                 <button type="submit" name="addCredit" class="brown_button" onClick={props.showAddCreditPage}>Add Credit</button>
             </div>
@@ -25,7 +25,8 @@ function UserInfo(props){
 class User extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { userEmail: "", password: "", pay:false, addCredit:false, history:[], buylist:[] }
+        this.state = { userInfo:{}, pay:false, addCredit:false, history:[], buylist:[] }
+        this.setState({userInfo:fetch("http://localhost:8080/user")})
         this.showPaymentPage=this.showPaymentPage.bind(this);
         this.hidePaymentPage=this.hidePaymentPage.bind(this);
     }
@@ -52,7 +53,7 @@ class User extends React.Component {
                 <PaymentPage show={this.state.pay} handleClose={this.hidePaymentPage} />
                 <AddCreditPage show={this.state.addCredit} handleClose={this.hideAddCreditPage} />
                 <Default_Header />
-                <UserInfo showAddCreditPage={this.showAddCreditPage}/>
+                <UserInfo showAddCreditPage={this.showAddCreditPage} userInfo={this.state.userInfo}/>
                 <div class="product_table">
                     <ul>
                         <li class="cart_table">
