@@ -7,21 +7,22 @@ function Logo() {
     )
 }
 
-function Home_Header() {
+function Home_Header(props) {
     return (
         <div class="header container-fluid">
             <Logo />
-            <div class="header_search_bar">
+            <form class="header_search_bar">
                 <div class="dropdown">
-                    <button class="dropbtn dropdown-toggle" data-toggle="dropdown" type="button">name</button>
-                    <div class="dropdown-menu">
-                        <a href="#" class="dropdown-item">name</a>
-                        <a href="#" class="dropdown-item">category</a>
+                    <button class="dropbtn dropdown-toggle" data-toggle="dropdown" type="button" /*onClick={props.handleDropdown}*/>{props.searchBy=="1"?"name":props.searchBy=="2"?"category":"provider"}</button>
+                    <div class="dropdown_content">
+                        <a href="#" class="dropdown-item" onClick={props.handleSearchByName}>name</a>
+                        <a href="#" class="dropdown-item" onClick={props.handleSearchByCategory}>category</a>
+                        <a href="#" class="dropdown-item" onClick={props.handleSearchByProvider}>provider</a>
                     </div>
                 </div>
-                <input type="text" placeholder="search your product ..." />
+                <input type="text" onChange={props.handleSearchQuery} onKeyDown={props.handleSearch} placeholder="search your product ..." />
                 <div class="img_wrap"><img src="../../assets/search.png" /></div>
-            </div>
+            </form>
             <div class="header_right">
             <p>#username</p>
                 <a class="brown_button" href="#contact">Cart 5</a>
