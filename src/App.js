@@ -17,24 +17,32 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './css/error.css'
 import './css/login.css'
 import './css/user.css'
+import {toast, ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function App() {
-  return (
-    <div>
-      <BrowserRouter>
-        <Routes>
-          <Route exact path="/" element={<Home/>}/>
-          <Route exact path="/commodity" element={<Commodity/>}/>
-          <Route exact path="/user" element={<User/>}/>
-          <Route exact path="/login" element={<Login/>}/>
-          <Route exact path="/signup" element={<Signup/>}/>
-          <Route exact path="/provider" element={<Provider/>}/>
-        </Routes>
-      </BrowserRouter>
-    </div>
-  )
-  // return (
+    const toastStyle = {
+        fontFamily: 'Arial',
+        fontSize: '28px'
+    };
+    return (
+        <div>
+            <ToastContainer toastStyle={toastStyle}/>
+            <BrowserRouter>
+                <Routes>
+                    <Route exact path="/" element={<Home/>}/>
+                    <Route exact path="/commodity" element={<Commodity/>}/>
+                    <Route exact path="/user" element={<User/>}/>
+                    <Route exact path="/login" element={<Login/>}/>
+                    <Route exact path="/signup" element={<Signup/>}/>
+                    <Route exact path="/provider" element={<Provider/>}/>
+                </Routes>
+            </BrowserRouter>
+        </div>
+    )
+
+// return (
   //   <div className="App">
   //     <header className="App-header">
   //       <img src={logo} className="App-logo" alt="logo" />
