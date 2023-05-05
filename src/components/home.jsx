@@ -26,19 +26,23 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = { products: [], sortBy: "name", searchBy:"1", searchText:"", search:false , availableOnly:false }
-        this.setState({products:this.getdata()})
+        this.getdata();
     }
 
     getdata=()=>{
         var searchType=(this.state.search==false)?"":"&searchType="+this.state.searchBy;
         var keyword=(this.state.search==false)?"":"&keyword="+this.state.searchText;
         var sortType=(this.state.sortBy=="")?"":"sortType="+this.state.sortBy;
-        return fetch("http://localhost:8080/commodities?"+sortType+keyword+searchType)
+        var obj;
+        fetch("http://localhost:8080/commodities?"+sortType+keyword+searchType).then(res => res.json())
+        .then(data => {
+            this.setState({products:data})
+         })
     }
 
     handleSearch=(e)=>{
         if(e.key=='Enter'){
-        this.setState({search:true},()=>{this.setState({products:this.getdata()})});
+        this.setState({search:true},()=>{this.getdata();});
         }
     }
 
@@ -54,11 +58,11 @@ class Home extends React.Component {
     }
 
     handleSortByName=()=>{
-        this.setState({sortBy:"name"},()=>{this.setState({products:this.getdata()})})
+        this.setState({sortBy:"name"},()=>{this.getdata();})
     }
 
     handleSortByPrice=()=>{
-        this.setState({sortBy:"price"},()=>{this.setState({products:this.getdata()})})
+        this.setState({sortBy:"price"},()=>{this.getdata();})
     }
 
     handleSearchQuery=(e)=>{
@@ -66,6 +70,7 @@ class Home extends React.Component {
     }
 
     render() {
+        console.log(this.state.products)
         return (
             <body>
                 <Home_Header handleSearch={this.handleSearch} handleSearchQuery={this.handleSearchQuery} searchBy={this.state.searchBy} handleSearchByName={this.handleSearchByName} handleSearchByCategory={this.handleSearchByCategory} handleSearchByProvider={this.handleSearchByProvider}/>
