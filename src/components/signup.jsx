@@ -30,6 +30,16 @@ class Signup extends React.Component {
             toast.error('email cannot be empty')
             return
         }
+        if(!this.state.birthDate){
+            console.log('empty birth date')
+            toast.error('birth date cannot be empty')
+            return
+        }
+        if(!this.state.address){
+            console.log('empty address')
+            toast.error('address cannot be empty')
+            return
+        }
         if(!this.state.password){
             console.log('empty password')
             toast.error('password cannot be empty')
