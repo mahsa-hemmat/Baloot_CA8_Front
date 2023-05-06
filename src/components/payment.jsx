@@ -39,11 +39,11 @@ function DiscountCode(props){
     )
 }
 
-function TotalCost(){
+function TotalCost(props){
     return(
         <div class="total_cost">
             <p>total</p>
-            <p>$1090000000</p>
+            <p>${props.totalCost}</p>
         </div>
     )
 }
@@ -70,7 +70,7 @@ function SubmitButtonsPayment(props){
     )
 }
 
-export const PaymentPage = ({ handleClose, show, children, handlePayment, handleDiscount, handleDiscountCode }) => {
+export const PaymentPage = ({ handleClose, show, children, handlePayment, handleDiscount, handleDiscountCode, totalCost }) => {
   const showHideClassName = show ? "modal display-block" : "modal display-none";
 
   return (
@@ -79,7 +79,7 @@ export const PaymentPage = ({ handleClose, show, children, handlePayment, handle
         {children}
         <Items/>
         <DiscountCode handleDiscount={handleDiscount} handleDiscountCode={handleDiscountCode}/>
-        <TotalCost/>
+        <TotalCost totalCost={totalCost}/>
         <SubmitButtonsPayment handleClose={handleClose} handlePayment={handlePayment} submitMessage="Buy!"/>
         
       </section>

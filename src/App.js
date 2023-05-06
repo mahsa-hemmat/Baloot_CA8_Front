@@ -26,6 +26,12 @@ function ProviderHelp(){
     return(<Provider param={param}/>)
 }
 
+function CommodityHelp(){
+  let param=useParams();
+  console.log(param);
+  return(<Commodity param={param}/>)
+}
+
 function App() {
   const toastStyle = {
     fontFamily: 'Arial',
@@ -37,7 +43,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<Home/>}/>
-          <Route exact path="/commodity" element={<Commodity/>}/>
+          <Route exact path="/commodity/:id" element={<CommodityHelp/>}/>
           <Route exact path="/user" element={<User/>}/>
           <Route exact path="/login" element={<Login/>}/>
           <Route exact path="/signup" element={<Signup/>}/>

@@ -4,8 +4,15 @@ import { Footer, Default_Header } from './header';
 import './../css/commodity.css'
 import { toast } from 'react-toastify';
 
+function CategoryItem(props){
+    return(<li>{props.cat}</li>)
+}
 
 function Product_Info(props) {
+    const categories=[]
+    for(var i=0;i<props.categories.length;i++){
+        categories.push(<CategoryItem cat={props.categories[i]}/>)
+    }
     return (
         <div class="product_info">
             <img src={props.commodityInfo.image} />
@@ -23,12 +30,15 @@ function Product_Info(props) {
                 <div class="category">
                     <p>Category(s)</p>
                     <ul>
-                        <li>{props.commodityInfo.categories}</li>
+                        {categories}
                     </ul>
                 </div>
                 <div class="add_to_cart shadow_box">
-                    <p>300$</p>
-                    <button class="white_button">Add to Cart</button>
+                    <p>{props.commodityInfo.price}$</p>
+                    <button class="white_button" onClick={() => {
+                    fetch("http://localhost:8080/user/buylist?commodityId=" + props.commodityInfo.id, {
+                        method: "POST",
+                    });}}>Add to Cart</button>
                 </div>
                 <div class="rate">
                     <div class="rate_stars">
@@ -45,32 +55,32 @@ function Product_Info(props) {
     )
 }
 
-function Comment(props){
-    return(
+function Comment(props) {
+    return (
         <div class="comment shadow_box">
-                <p class="comment_text">{props.text}</p>
-                <div class="comment_info">
-                    <p>{props.date}</p>
-                    <p>.</p>
-                    <p>{props.user}</p>
-                </div>
-                <div class="comment_right">
-                    <p>Is this comment helpful?</p>
-                    <p>{props.like}</p><img src={require("../assets/thumbs_up.png")} />
-                    <p>{props.dislike}</p><img src={require("../assets/thumbs_down.png")}/>
-                </div>
+            <p class="comment_text">{props.text}</p>
+            <div class="comment_info">
+                <p>{props.date}</p>
+                <p>.</p>
+                <p>{props.user}</p>
             </div>
+            <div class="comment_right">
+                <p>Is this comment helpful?</p>
+                <p>{props.like}</p><img onClick={()=>{fetch("http://localhost:8080/comment/"+props.id+"?vote=1", {method: "POST"})}} src={require("../assets/thumbs_up.png")} />
+                <p>{props.dislike}</p><img onClick={()=>{fetch("http://localhost:8080/comment/"+props.id+"?vote=-1", {method: "POST"})}} src={require("../assets/thumbs_down.png")} />
+            </div>
+        </div>
     )
 }
 
 function Comments(props) {
-    const comments=[]
-    for(var i=0;i<props.comments.length;i++){
+    const comments = []
+    for (var i = 0; i < props.comments.length; i++) {
         comments.push(<Comment
-            id = {props.comments[i].id}
-            user = {props.comments[i].userEmail}
+            id={props.comments[i].id}
+            user={props.comments[i].userEmail}
             commodityId={props.comments[i].commodityId}
-            text = {props.comments[i].text}
+            text={props.comments[i].text}
             date={props.comments[i].date}
             like={props.comments[i].like}
             dislike={props.comments[i].dislike}
@@ -82,10 +92,10 @@ function Comments(props) {
             {comments}
             <div class="your_comment shadow_box">
                 <p>Submit your opinion</p>
-                <form>
-                    <input />
-                    <button class="brown_button">Post</button>
-                </form>
+                <div class="comment_form">
+                    <input onChange={props.handleCommentChange} />
+                    <button class="brown_button" onClick={props.handleCommentSubmit}>Post</button>
+                </div>
             </div>
         </div>
     );
@@ -94,34 +104,35 @@ function Comments(props) {
 class Commodity extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { commodityInfo:{} , id:"" ,comments:[] ,suggestion:[] , newComment: "",}
-        this.setState({id:props.param.id})
-        fetch("http://localhost:8080/commodities/"+props.param.id)
+        this.state = { commodityInfo: {}, id2: "", id: "1", comments: [], suggestion: [], commentText: "",categories:[] }
+        this.setState({ id: props.param.id })
+        fetch("http://localhost:8080/commodities/" + props.param.id)
             .then(res => {
                 if (!res.ok && res.status !== 405) {
                     res.text().then(errorMessage => {
                         toast.error(errorMessage);
                         // 404 page error
                     });
-                if(res.status === 405)
-                    window.location.href = "http://localhost:3000/login"
+                    if (res.status === 405)
+                        window.location.href = "http://localhost:3000/login"
                 }
                 return res.json();
             })
             .then(data => {
                 this.setState({ commodityInfo: data });
+                this.setState({categories:data.categories})
             })
             .catch(error => {
                 console.error(error);
             });
-        fetch("http://localhost:8080/commodities/"+props.param.id+"/comments")
+        fetch("http://localhost:8080/commodities/" + props.param.id + "/comments")
             .then(res => {
                 if (!res.ok && res.status !== 405) {
                     res.text().then(errorMessage => {
                         toast.error(errorMessage);
                         // show 404 page
                     });
-                    if(res.status === 405)
+                    if (res.status === 405)
                         window.location.href = "http://localhost:3000/login"
                 }
                 return res.json();
@@ -132,14 +143,14 @@ class Commodity extends React.Component {
             .catch(error => {
                 console.error(error);
             })
-        fetch("http://localhost:8080/commodities/"+props.param.id+"/recommended")
+        fetch("http://localhost:8080/commodities/" + props.param.id + "/recommended")
             .then(res => {
                 if (!res.ok && res.status !== 405) {
                     res.text().then(errorMessage => {
                         toast.error(errorMessage);
                         // show 404 page
                     });
-                    if(res.status === 405)
+                    if (res.status === 405)
                         window.location.href = "http://localhost:3000/login"
                 }
                 return res.json();
@@ -153,35 +164,36 @@ class Commodity extends React.Component {
 
 
     }
-    handleCommentSubmit = (e) => {
-        e.preventDefault();
-        const commentText = e.target.elements.commentText.value;
-        // make a POST request to submit the comment
+    handleCommentChange = (e) => {
+        this.setState({ commentText: e.target.value })
+    }
+
+    handleCommentSubmit = () => {
+        console.log(this.state.commentText)
         fetch("http://localhost:8080/comment", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                text: commentText,
+                text: this.state.commentText,
                 commodityId: this.state.id
             })
-        })
-            .then(res => res.json())
-            .then(data => {
-                // add the new comment to the comments array in the state
-                this.setState(prevState => ({
-                    comments: [...prevState.comments, data]
-                }));
-            })
-            .catch(error => {
-                console.error(error);
-            });
+        });
     };
+
+    handleUpvote = () => {
+
+    }
+
+    handleDownvote = () => {
+
+    }
+
     render() {
         return (
             <body>
                 <Default_Header />
-                <Product_Info commodityInfo={this.state.commodityInfo}/>
-                <Comments comments={this.state.comments} handleCommentSubmit={this.handleCommentSubmit}/>
+                <Product_Info commodityInfo={this.state.commodityInfo} categories={this.state.categories} />
+                <Comments comments={this.state.comments} handleCommentSubmit={this.handleCommentSubmit} handleCommentChange={this.handleCommentChange} />
                 <div className="suggestion">
                     <p className="title">You might also like...</p>
                     <ProductList products={this.state.suggestion} />

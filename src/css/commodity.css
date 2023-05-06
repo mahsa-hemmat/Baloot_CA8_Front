@@ -78,7 +78,6 @@
 
 
 .product_info_right .producer{
-    width: 121px;
     height: 29px;
     font-weight: 600;
     font-size: 24px;
@@ -261,7 +260,7 @@ margin-top: 25px;
     color: #593C1C;
  }
 
- .your_comment form{
+ .your_comment .comment_form{
     display: flex;
     flex-direction: row;
     align-items: flex-end;

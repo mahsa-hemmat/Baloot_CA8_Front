@@ -1,12 +1,19 @@
+import React from 'react';
+
+
 function ProductCard(props) {
     return (
         <div class="product shadow_box">
-            <h1>{props.name}</h1>
+            <h1>{props.name} </h1>
             <p class="stock">{props.inStock} left in stock</p>
             <img src={props.image} alt="product" />
             <div class="product_inner">
                 <p class="price">${props.price}</p>
-                <button class="white_button">Add to Cart</button>
+                <button class="white_button" onClick={() => {
+                    fetch("http://localhost:8080/user/buylist?commodityId=" + props.id, {
+                        method: "POST",
+                    });
+                }}>Add to Cart</button>
             </div>
         </div>
     );
@@ -48,12 +55,13 @@ function ProductRow(props) {
 function ProductList(props) {
     const products = [];
     for (var i = 0; i < props.products.length; i += 1) {
-        products.push(<ProductCard 
-                        name = {props.products[i].name}
-                        inStock={props.products[i].inStock} 
-                        image = {props.products[i].image} 
-                        price={props.products[i].price} 
-                        />)
+        products.push(<ProductCard
+            name={props.products[i].name}
+            inStock={props.products[i].inStock}
+            image={props.products[i].image}
+            price={props.products[i].price}
+            id={props.products[i].id}
+        />)
     }
     return (
         <div class="products">
@@ -66,14 +74,14 @@ export function ProductTable(props) {
     const products = [];
     for (var i = 0; i < props.products.length; i += 1) {
         products.push(<ProductRow
-                        name = {props.products[i].name}
-                        inStock={props.products[i].inStock} 
-                        image = {props.products[i].image} 
-                        price={props.products[i].price} 
-                        providerId={props.products[i].providerId}
-                        rate={props.products[i].rate}
-                        category={props.products[i].category}
-                        />)
+            name={props.products[i].name}
+            inStock={props.products[i].inStock}
+            image={props.products[i].image}
+            price={props.products[i].price}
+            providerId={props.products[i].providerId}
+            rate={props.products[i].rate}
+            category={props.products[i].category}
+        />)
     }
     return (
         <table>
@@ -98,14 +106,14 @@ export function ProductHistoryTable(props) {
     const products = [];
     for (var i = 0; i < props.products.length; i += 1) {
         products.push(<ProductHistoryRow
-                        name = {props.products[i].name}
-                        inStock={props.products[i].inStock} 
-                        image = {props.products[i].image} 
-                        price={props.products[i].price} 
-                        providerId={props.products[i].providerId}
-                        rate={props.products[i].rate}
-                        category={props.products[i].category}
-                        />)
+            name={props.products[i].name}
+            inStock={props.products[i].inStock}
+            image={props.products[i].image}
+            price={props.products[i].price}
+            providerId={props.products[i].providerId}
+            rate={props.products[i].rate}
+            category={props.products[i].category}
+        />)
     }
     return (
         <table>
