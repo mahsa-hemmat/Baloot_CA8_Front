@@ -79,8 +79,8 @@ export function ProductTable(props) {
             image={props.products[i].image}
             price={props.products[i].price}
             providerId={props.products[i].providerId}
-            rate={props.products[i].rate}
-            category={props.products[i].category}
+            rate={props.products[i].rating}
+            category={props.products[i].categories}
         />)
     }
     return (
@@ -111,8 +111,8 @@ export function ProductHistoryTable(props) {
             image={props.products[i].image}
             price={props.products[i].price}
             providerId={props.products[i].providerId}
-            rate={props.products[i].rate}
-            category={props.products[i].category}
+            rate={props.products[i].rating}
+            category={props.products[i].categories}
         />)
     }
     return (

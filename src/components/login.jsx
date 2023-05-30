@@ -19,14 +19,14 @@ class Login extends React.Component {
         const value = target.value;
         this.setState({ [name]: value });
     }
-    handleSubmit = (event) => {
+    handleSubmit = async (event) => {
         event.preventDefault();
 
         const requestBody = {
             username: this.state.username,
             password: this.state.password,
         };
-        fetch("http://localhost:8080/auth/login", {
+        await fetch("http://localhost:8080/auth/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -34,6 +34,7 @@ class Login extends React.Component {
             body: JSON.stringify(requestBody),
         }).then(response => {
             if (response.ok) {
+                this.props.handleLogin(this.state.username);
                 window.location.href = "http://localhost:3000/"
             } else {
                 response.text().then(errorMessage => {

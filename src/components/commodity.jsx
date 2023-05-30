@@ -3,6 +3,7 @@ import ProductList from './products';
 import { Footer, Default_Header } from './header';
 import './../css/commodity.css'
 import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function CategoryItem(props){
     return(<li>{props.cat}</li>)
@@ -10,7 +11,7 @@ function CategoryItem(props){
 
 function Product_Info(props) {
     const categories=[]
-    for(var i=0;i<props.categories.length;i++){
+    for(let i=0; i<props.categories.length; i++){
         categories.push(<CategoryItem cat={props.categories[i]}/>)
     }
     return (
@@ -38,7 +39,21 @@ function Product_Info(props) {
                     <button class="white_button" onClick={() => {
                     fetch("http://localhost:8080/user/buylist?commodityId=" + props.commodityInfo.id, {
                         method: "POST",
-                    });}}>Add to Cart</button>
+                        headers: {
+                            "Content-Type": "application/json",
+                        }}).then(res => {
+                        if (!res.ok) {
+                            res.text().then(errorMessage => {
+                                toast.error(errorMessage);
+                                // 404 page error
+                            });
+                            if (res.status === 401)
+                                window.location.href = "http://localhost:3000/login"
+                        }
+                    }).catch(error => {
+                        console.error(error);
+                    });
+                    }}>Add to Cart</button>
                 </div>
                 <div class="rate">
                     <div class="rate_stars">
@@ -66,8 +81,39 @@ function Comment(props) {
             </div>
             <div class="comment_right">
                 <p>Is this comment helpful?</p>
-                <p>{props.like}</p><img onClick={()=>{fetch("http://localhost:8080/comment/"+props.id+"?vote=1", {method: "POST"})}} src={require("../assets/thumbs_up.png")} />
-                <p>{props.dislike}</p><img onClick={()=>{fetch("http://localhost:8080/comment/"+props.id+"?vote=-1", {method: "POST"})}} src={require("../assets/thumbs_down.png")} />
+                <p>{props.like}</p><img onClick={()=>{fetch("http://localhost:8080/comment/" + props.id + "?vote=1", {method: "POST",
+                headers: {
+                "Content-Type": "application/json",
+            }}).then(response => {
+                if (response.ok) {
+                    response.text().then(successMessage => {
+                        toast.success(successMessage);
+                    });
+                } else {
+                    response.text().then(errorMessage => {
+                        toast.error(errorMessage);
+                    });
+                }
+            }).catch(error => {
+                console.error(error);
+            });}} src={require("../assets/thumbs_up.png")} />
+                <p>{props.dislike}</p><img onClick={()=>{fetch("http://localhost:8080/comment/" + props.id + "?vote=-1", {method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                }}).then(response => {
+                if (response.ok) {
+                    response.text().then(successMessage => {
+                        toast.success(successMessage);
+                    });
+                } else {
+                    response.text().then(errorMessage => {
+                        toast.error(errorMessage);
+                    });
+                }
+            }).catch(error => {
+                console.error(error);
+            });
+                }} src={require("../assets/thumbs_down.png")} />
             </div>
         </div>
     )
@@ -108,12 +154,12 @@ class Commodity extends React.Component {
         this.setState({ id: props.param.id })
         fetch("http://localhost:8080/commodities/" + props.param.id)
             .then(res => {
-                if (!res.ok && res.status !== 405) {
+                if (!res.ok) {
                     res.text().then(errorMessage => {
                         toast.error(errorMessage);
                         // 404 page error
                     });
-                    if (res.status === 405)
+                    if (res.status === 401)
                         window.location.href = "http://localhost:3000/login"
                 }
                 return res.json();
@@ -127,13 +173,10 @@ class Commodity extends React.Component {
             });
         fetch("http://localhost:8080/commodities/" + props.param.id + "/comments")
             .then(res => {
-                if (!res.ok && res.status !== 405) {
+                if (!res.ok) {
                     res.text().then(errorMessage => {
                         toast.error(errorMessage);
-                        // show 404 page
                     });
-                    if (res.status === 405)
-                        window.location.href = "http://localhost:3000/login"
                 }
                 return res.json();
             })
@@ -145,17 +188,13 @@ class Commodity extends React.Component {
             })
         fetch("http://localhost:8080/commodities/" + props.param.id + "/recommended")
             .then(res => {
-                if (!res.ok && res.status !== 405) {
+                if (!res.ok) {
                     res.text().then(errorMessage => {
                         toast.error(errorMessage);
-                        // show 404 page
                     });
-                    if (res.status === 405)
-                        window.location.href = "http://localhost:3000/login"
                 }
                 return res.json();
-            })
-            .then(data => {
+            }).then(data => {
                 this.setState({ suggestion: data });
             })
             .catch(error => {
@@ -172,11 +211,23 @@ class Commodity extends React.Component {
         console.log(this.state.commentText)
         fetch("http://localhost:8080/comment", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
                 text: this.state.commentText,
                 commodityId: this.state.id
             })
+        }).then(res => {
+            if (res.ok) {
+                res.text().then(successMessage => {
+                    toast.success(successMessage);
+                });
+            } else {
+                res.text().then(errorMessage => {
+                    toast.error(errorMessage);
+                });
+            }
+        }).catch(error => {
+            console.error(error);
         });
     };
 

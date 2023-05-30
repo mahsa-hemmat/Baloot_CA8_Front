@@ -52,7 +52,7 @@ class UIn extends React.Component {
         return(
             <div class="header_right">
                 <a href="/user">
-                <p>#{this.state.username}</p>
+                <p>{this.state.username}</p>
                 </a>
                 <a class={cartClass} href="user">Cart {this.state.data.length}</a>
             </div>

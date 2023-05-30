@@ -3,6 +3,7 @@ import { ProductTable, ProductHistoryTable } from './products';
 import { Footer, Default_Header } from './header';
 import { PaymentPage, AddCreditPage } from './payment';
 import './../css/user.css'
+import {toast} from "react-toastify";
 
 function UserInfo(props) {
     return (
@@ -26,7 +27,12 @@ class User extends React.Component {
     constructor(props) {
         super(props);
         this.state = { userInfo: {}, pay: false, addCredit: false, history: [], buylist: [], amount: 0, discode: "", totalCost: 0, buylistCount: [] }
-        fetch("http://localhost:8080/user").then(res => res.json())
+        fetch("http://localhost:8080/user").then(res => {
+            if (res.status === 401) {
+                window.location.href = "http://localhost:3000/login";
+            }
+            return res.json();
+        })
             .then(data => {
                 this.setState({ userInfo: data })
             })
@@ -72,14 +78,31 @@ class User extends React.Component {
         handleCreditIncrease = () => {
             fetch("http://localhost:8080/user/credit?credit=" + this.state.amount, {
                 method: "POST",
+            }).then(response => {
+                if (response.ok) {
+                    response.text().then(successMessage => {
+                        toast.success(successMessage);
+                    });
+                } else {
+                    response.text().then(errorMessage => {
+                        toast.error(errorMessage);
+                    });
+                }
             })
+            this.hideAddCreditPage();
         }
 
         handleDiscount = () => {
             fetch("http://localhost:8080/user/discount?discountcode=" + this.state.discode, {
                 method: "POST",
-            }).then(res => res.json())
-                .then(data => {
+            }).then(response => {
+                if (!response.ok) {
+                    response.text().then(errorMessage => {
+                        toast.error(errorMessage);
+                    });
+                }
+                return response.json();
+            }).then(data => {
                     this.setState({ totalCost: data })
                 })
         }
@@ -91,7 +114,18 @@ class User extends React.Component {
         handlePayment = () => {
             fetch("http://localhost:8080/user/payment", {
                 method: "POST",
+            }).then(response => {
+                if (response.ok) {
+                    response.text().then(successMessage => {
+                        toast.success(successMessage);
+                    });
+                } else {
+                    response.text().then(errorMessage => {
+                        toast.error(errorMessage);
+                    });
+                }
             })
+            this.hidePaymentPage();
         }
 
         handleCreditAmount = (e) => {

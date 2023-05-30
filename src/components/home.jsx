@@ -3,6 +3,7 @@ import Home_Header from './header';
 import ProductList from './products';
 import { Footer } from './header';
 import './../css/home.css'
+import {toast} from "react-toastify";
 
 function Search_Bar(props) {
     return (
@@ -34,10 +35,17 @@ class Home extends React.Component {
         var keyword=(this.state.search==false)?"":"&keyword="+this.state.searchText;
         var sortType=(this.state.sortBy=="")?"":"sortType="+this.state.sortBy;
         var obj;
-        fetch("http://localhost:8080/commodities?"+sortType+keyword+searchType).then(res => res.json())
-        .then(data => {
-            this.setState({products:data})
-         })
+        fetch("http://localhost:8080/commodities?"+sortType+keyword+searchType).then(res => {
+            if (!res.ok) {
+                res.text().then(errorMessage => {
+                    toast.error(errorMessage);
+                });
+            }
+            return res.json();
+        })
+            .then(data => {
+                this.setState({ products: data });
+            });
     }
 
     handleSearch=(e)=>{
