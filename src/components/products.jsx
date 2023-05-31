@@ -12,6 +12,18 @@ function ProductCard(props) {
                 <button class="white_button" onClick={() => {
                     fetch("http://localhost:8080/user/buylist?commodityId=" + props.id, {
                         method: "POST",
+                    }).then(response => {
+                        if (response.ok) {
+                            response.text().then(successMessage => {
+                                toast.success(successMessage);
+                            });
+                        } else {
+                            response.text().then(errorMessage => {
+                                toast.error(errorMessage);
+                            });
+                        }
+                    }).catch(error => {
+                        console.error(error);
                     });
                 }}>Add to Cart</button>
             </div>
