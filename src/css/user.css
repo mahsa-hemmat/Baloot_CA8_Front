@@ -29,6 +29,15 @@
     background: url('../assets/location.png') no-repeat left center;
 }
 
+.user_info ul button{
+    width: 150px;
+    height: 57px;
+    font-weight: 600;
+    font-size: 24px;
+    margin-top: 20px;
+    margin-right: 60px;
+}
+
 .user_info li {
     font-weight: 600;
     font-size: 28px;

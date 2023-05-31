@@ -2,7 +2,7 @@ import React from 'react';
 import { ProductTable, ProductHistoryTable } from './products';
 import { Footer, Default_Header } from './header';
 import { PaymentPage, AddCreditPage } from './payment';
-import './../css/user.css'
+import '../css/user.css'
 import {toast} from "react-toastify";
 
 function UserInfo(props) {
@@ -13,6 +13,11 @@ function UserInfo(props) {
                 <li id="email">{props.userInfo.email}</li>
                 <li id="birth_date">{props.userInfo.birthDate}</li>
                 <li id="address">{props.userInfo.address}</li>
+                <button class="brown_button" onClick={() => {
+                    fetch("http://localhost:8080/auth/logout", {
+                        method: "POST",
+                    });
+                }}>logout</button>
             </ul>
             <div class="user_info_right">
                 <h1>${props.userInfo.credit}</h1>

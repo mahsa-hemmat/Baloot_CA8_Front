@@ -2,7 +2,7 @@ import React from 'react';
 import Home_Header from './header';
 import ProductList from './products';
 import { Footer } from './header';
-import './../css/home.css'
+import '../css/home.css'
 import {toast} from "react-toastify";
 
 function Search_Bar(props) {
@@ -26,7 +26,7 @@ function Search_Bar(props) {
 class Home extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { products: [], sortBy: "name", searchBy:"1", searchText:"", search:false , availableOnly:false }
+        this.state = { products: [], sortBy: "name", searchBy:"1", searchText:"", search:false , availableOnly:false, page:1 }
         this.getdata();
     }
 
@@ -73,6 +73,16 @@ class Home extends React.Component {
         this.setState({sortBy:"price"},()=>{this.getdata();})
     }
 
+    handleNextPage=()=>{
+        if((this.state.page)<this.state.products.length/12)
+        this.setState({page:this.state.page+1})
+    }
+
+    handlePrevPage=()=>{
+        if(this.state.page!=1)
+            this.setState({page:this.state.page-1})
+    }
+
     handleSearchQuery=(e)=>{
         if(e.target.value!="")
             this.setState({searchText:e.target.value},()=>{this.setState({search:true},()=>{this.getdata();});})
@@ -87,7 +97,7 @@ class Home extends React.Component {
                 <Home_Header handleSearch={this.handleSearch} handleSearchQuery={this.handleSearchQuery} searchBy={this.state.searchBy} handleSearchByName={this.handleSearchByName} handleSearchByCategory={this.handleSearchByCategory} handleSearchByProvider={this.handleSearchByProvider}/>
                 <div class="home">
                     <Search_Bar handleSortByName={this.handleSortByName} handleSortByPrice={this.handleSortByPrice} />
-                    <ProductList products={this.state.products}/>
+                    <ProductList products={this.state.products} page={this.state.page} handleNextPage={this.handleNextPage} handlePrevPage={this.handlePrevPage}/>
                 </div>
                 <Footer/>
                 

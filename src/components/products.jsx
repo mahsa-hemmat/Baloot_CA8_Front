@@ -1,10 +1,11 @@
 import React from 'react';
-
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function ProductCard(props) {
     return (
         <div class="product shadow_box">
-            <h1>{props.name} </h1>
+            <h1><a href={'http://localhost:3000/commodity/'+props.id}>{props.name}</a> </h1>
             <p class="stock">{props.inStock} left in stock</p>
             <img src={props.image} alt="product" />
             <div class="product_inner">
@@ -50,7 +51,7 @@ function ProductRow(props) {
     return (
         <tr>
             <td><img src={props.image} /></td>
-            <td>{props.name}</td>
+            <td><a href={'http://localhost:3000/commodity/'+props.id}>{props.name}</a></td>
             <td>{props.category}</td>
             <td>${props.price}</td>
             <td>{props.providerId}</td>
@@ -66,7 +67,17 @@ function ProductRow(props) {
 
 function ProductList(props) {
     const products = [];
-    for (var i = 0; i < props.products.length; i += 1) {
+    const pages=[];
+    var start=0;
+    var end=props.products.length;
+    if(props.page){
+        start=(props.page-1)*12;
+    }
+    if(props.page){
+        end=Math.min(props.page*12,props.products.length);
+    }
+
+    for (var i = start; i < end; i += 1) {
         products.push(<ProductCard
             name={props.products[i].name}
             inStock={props.products[i].inStock}
@@ -75,11 +86,43 @@ function ProductList(props) {
             id={props.products[i].id}
         />)
     }
+
+    if(props.page){
+        var j=1;
+        var selected_class=""
+        for(var i=0;i<props.products.length;i+=12){
+            if(j==props.page){
+                selected_class="selected_page"
+            }
+            else{
+                selected_class=""
+            }
+            pages.push(<p class={selected_class}>{j}</p>)
+            j+=1;
+        }
+    }
+
+    if(!props.page)
     return (
         <div class="products">
             {products}
         </div>
     );
+    else
+    return (
+        <div class="multipage_product">
+            <div class="products">
+                {products}
+            </div>
+            <div class="pages_number">
+                <button onClick={props.handlePrevPage}>{"<"}</button>
+                    {pages}
+                <button onClick={props.handleNextPage}>{">"}</button>
+
+            </div>
+        </div>
+    );
+
 }
 
 export function ProductTable(props) {
@@ -93,6 +136,7 @@ export function ProductTable(props) {
             providerId={props.products[i].providerId}
             rate={props.products[i].rating}
             category={props.products[i].categories}
+            id={props.products[i].id}
         />)
     }
     return (

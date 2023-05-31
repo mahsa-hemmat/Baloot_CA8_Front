@@ -1,7 +1,7 @@
 import React from 'react';
 import { NoUserHeader } from './header';
 import { Footer } from './header';
-import './../css/login.css'
+import '../css/login.css'
 import { toast } from 'react-toastify';
 
 

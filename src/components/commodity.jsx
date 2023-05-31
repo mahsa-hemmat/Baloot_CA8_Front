@@ -1,7 +1,7 @@
 import React from 'react';
 import ProductList from './products';
 import { Footer, Default_Header } from './header';
-import './../css/commodity.css'
+import '../css/commodity.css'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -11,8 +11,15 @@ function CategoryItem(props){
 
 function Product_Info(props) {
     const categories=[]
+    const stars=[]
     for(let i=0; i<props.categories.length; i++){
         categories.push(<CategoryItem cat={props.categories[i]}/>)
+    }
+    for(let i=0; i<10; i++){
+        if(i<props.rate)
+            stars.push( <img src={require("../assets/star2.png")} onClick={()=>props.setRating(i+1)} />)
+        else
+            stars.push( <img src={require("../assets/star1.png")} onClick={()=>props.setRating(i+1)} />)
     }
     return (
         <div class="product_info">
@@ -27,7 +34,7 @@ function Product_Info(props) {
                         <p class="total_score_count">({props.commodityInfo.ratingsCount})</p>
                     </div>
                 </div>
-                <p class="producer">by <a href="providers/">{props.commodityInfo.providerName}</a></p>
+                <p class="producer">by <a href={"http://localhost:3000/providers/"+props.commodityInfo.providerId}>{props.commodityInfo.providerName}</a></p>
                 <div class="category">
                     <p>Category(s)</p>
                     <ul>
@@ -59,11 +66,10 @@ function Product_Info(props) {
                     <div class="rate_stars">
                         <p>rate now</p>
                         <div class="stars">
-                            <img src={require("../assets/star.png")} />
-                            <img src={require("../assets/star.png")} />
+                           {stars}
                         </div>
                     </div>
-                    <button class="brown_button">Submit</button>
+                    <button class="brown_button" onClick={props.handleSubmitRating}>Submit</button>
                 </div>
             </div>
         </div>
@@ -150,7 +156,7 @@ function Comments(props) {
 class Commodity extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { commodityInfo: {}, id2: "", id: "1", comments: [], suggestion: [], commentText: "",categories:[] }
+        this.state = { commodityInfo: {}, id2: "", id: "1", comments: [], suggestion: [], commentText: "",categories:[], rate: 0 }
         this.setState({ id: props.param.id })
         fetch("http://localhost:8080/commodities/" + props.param.id)
             .then(res => {
@@ -239,11 +245,34 @@ class Commodity extends React.Component {
 
     }
 
+    setRating = (rate)=>{
+        this.setState({rate:rate});
+    }
+
+    handleSubmitRating=()=>{
+        if(this.state.rate!=0)
+        fetch("http://localhost:8080/commodities/"+this.state.id+"?score="+this.state.rate.toString(), {
+            method: "POST", 
+        }).then(res => {
+            if (res.ok) {
+                res.text().then(successMessage => {
+                    toast.success(successMessage);
+                });
+            } else {
+                res.text().then(errorMessage => {
+                    toast.error(errorMessage);
+                });
+            }
+        }).catch(error => {
+            console.error(error);
+        });
+    }
+
     render() {
         return (
             <body>
                 <Default_Header />
-                <Product_Info commodityInfo={this.state.commodityInfo} categories={this.state.categories} />
+                <Product_Info commodityInfo={this.state.commodityInfo} categories={this.state.categories} setRating={this.setRating} rate={this.state.rate} handleSubmitRating={this.handleSubmitRating} />
                 <Comments comments={this.state.comments} handleCommentSubmit={this.handleCommentSubmit} handleCommentChange={this.handleCommentChange} />
                 <div className="suggestion">
                     <p className="title">You might also like...</p>

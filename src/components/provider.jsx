@@ -1,7 +1,7 @@
 import React from 'react';
 import ProductList from './products';
 import { Footer, Default_Header } from './header';
-import './../css/provider.css'
+import '../css/provider.css'
 import {toast} from "react-toastify";
 
 function ProviderInfo(props){
