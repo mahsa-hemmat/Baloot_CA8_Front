@@ -1,0 +1,137 @@
+.user_info {
+    width: 1597px;
+    height: 349px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.user_info ul {
+    padding: 0;
+    margin-top: 42px;
+    list-style-type: none;
+    align-self: flex-start;
+}
+
+.user_info #username {
+    background: url('../assets/person.png') no-repeat left center;
+}
+
+.user_info #email {
+    background: url('../assets/mail.png') no-repeat left center;
+}
+
+.user_info #birth_date {
+    background: url('../assets/calender.png') no-repeat left center;
+}
+
+.user_info #address {
+    background: url('../assets/location.png') no-repeat left center;
+}
+
+.user_info ul button{
+    width: 150px;
+    height: 57px;
+    font-weight: 600;
+    font-size: 24px;
+    margin-top: 20px;
+    margin-right: 60px;
+}
+
+.user_info li {
+    font-weight: 600;
+    font-size: 28px;
+    color: #593C1C;
+    margin-bottom: 15px;
+    margin-top: 0px;
+    text-align: left;
+    margin-left: 35px;
+    height: 34px;
+    padding-left: 42px;
+}
+
+.user_info_right {
+    margin-right: 35px;
+    display: flex;
+    flex-direction: column;
+    gap: 13px
+}
+
+.user_info_right * {
+    width: 727px;
+    height: 57px;
+    font-weight: 600;
+    font-size: 24px;
+}
+
+.user_info_right h1 {
+    width: 660px;
+    height: 155px;
+    font-weight: 600;
+    font-size: 128px;
+    color: #593C1C;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+.product_table button {
+    width: 727px;
+    height: 57px;
+    font-weight: 600;
+    font-size: 24px;
+}
+
+.product_table ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+.product_table li {
+    padding-left: 42px;
+    font-size: 40px;
+}
+
+.product_table .cart_table {
+    margin-top: 89px;
+    background: url('../assets/cart.png') no-repeat left center;
+}
+
+.product_table .history_table {
+    background: url('../assets/history.png') no-repeat left center;
+}
+
+.counter {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid #593C1C;
+    width: 150px;
+    margin-left: 25px;
+
+}
+
+.counter_value {
+    width: 50px;
+    height: 80px;
+    background: #FFFFFF;
+    font-weight: 400;
+    font-size: 24px;
+    border: 0px;
+    border-radius: 0px;
+}
+
+button.counter_button {
+    width: 50px;
+    height: 84px;
+    background-color: #FFFFFF;
+}
+
+input[type="number"] {
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
