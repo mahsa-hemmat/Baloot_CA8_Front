@@ -13,6 +13,9 @@ function ProductCard(props) {
                 <button class="white_button" onClick={() => {
                     fetch("http://localhost:8080/user/buylist?commodityId=" + props.id, {
                         method: "POST",
+                        headers:{
+                            "Authorization": localStorage.getItem("jwt")
+                        }
                     }).then(response => {
                         if (response.ok) {
                             response.text().then(successMessage => {

@@ -35,12 +35,17 @@ class Login extends React.Component {
         }).then(response => {
             if (response.ok) {
                 this.props.handleLogin(this.state.username);
+                return response.json()
                 window.location.href = "http://localhost:3000/"
             } else {
                 response.text().then(errorMessage => {
                     toast.error(errorMessage);
                 });
             }
+        }).then(token=>{
+            console.log("here")
+            console.log(token)
+            localStorage.setItem('jwt', token.jwt)
         }).catch(error => {
             console.error(error);
         });
@@ -58,6 +63,7 @@ class Login extends React.Component {
                     <p>Password</p>
                     <input type="text" name="password" value={this.state.password} onChange={this.onInputChange}/>
                     <button className="brown_button" onClick={this.handleSubmit}>Login</button>
+                    <a href='https://github.com/login/oauth/authorize?client_id=1ed1d4c744ddbb6cffea&scope=user'>login with github</a>
                     <p className="note">Don't have an account? <a href="signup">sign up</a> </p>
                 </div>
                 <Footer />

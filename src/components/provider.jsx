@@ -18,9 +18,12 @@ class Provider extends React.Component {
     constructor(props) {
         super(props);
         this.state = { providerInfo:{} , id:"" ,products:[]}
-        console.log(fetch("http://localhost:8080/providers/"+props.param.id+"/commodities"))
         this.setState({id:props.param.id})
-        fetch("http://localhost:8080/providers/"+props.param.id).then(res => {
+        fetch("http://localhost:8080/providers/"+props.param.id,{
+            headers:{
+                "Authorization": localStorage.getItem("jwt")
+            }
+        }).then(res => {
             if (!res.ok) {
                 if(res.status === 401){
                     window.location.href = "http://localhost:3000/login"
@@ -33,7 +36,11 @@ class Provider extends React.Component {
         }).then(data => {
           this.setState({providerInfo:data})
          })
-        fetch("http://localhost:8080/providers/"+props.param.id+"/commodities").then(res => {
+        fetch("http://localhost:8080/providers/"+props.param.id+"/commodities",{
+            headers:{
+                "Authorization": localStorage.getItem("jwt")
+            }
+        }).then(res => {
             if (!res.ok) {
                 res.text().then(errorMessage => {
                     toast.error(errorMessage);

@@ -37,11 +37,19 @@ class UIn extends React.Component {
     constructor(props) {
         super(props);
         this.state = { username:"" ,data:[]}
-        fetch("http://localhost:8080/user").then(res => res.json())
+        fetch("http://localhost:8080/user",{
+            headers:{
+                "Authorization": localStorage.getItem("jwt")
+            }
+        }).then(res => res.json())
         .then(data => {
             this.setState({username:data.username})
          })
-         fetch("http://localhost:8080/user/buylist").then(res => res.json())
+         fetch("http://localhost:8080/user/buylist",{
+            headers:{
+                "Authorization": localStorage.getItem("jwt")
+            }
+         }).then(res => res.json())
         .then(data => {
             this.setState({data:data})
          })

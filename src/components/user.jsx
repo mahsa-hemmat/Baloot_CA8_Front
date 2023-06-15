@@ -14,6 +14,7 @@ function UserInfo(props) {
                 <li id="birth_date">{props.userInfo.birthDate}</li>
                 <li id="address">{props.userInfo.address}</li>
                 <button class="brown_button" onClick={() => {
+                    localStorage.clear();
                     fetch("http://localhost:8080/auth/logout", {
                         method: "POST",
                     });
@@ -32,7 +33,11 @@ class User extends React.Component {
     constructor(props) {
         super(props);
         this.state = { userInfo: {}, pay: false, addCredit: false, history: [], buylist: [], amount: 0, discode: "", totalCost: 0, buylistCount: [] }
-        fetch("http://localhost:8080/user").then(res => {
+        fetch("http://localhost:8080/user",{
+            headers:{
+                "Authorization": localStorage.getItem("jwt")
+            }
+        }).then(res => {
             if (res.status === 401) {
                 window.location.href = "http://localhost:3000/login";
             }
@@ -41,7 +46,11 @@ class User extends React.Component {
             .then(data => {
                 this.setState({ userInfo: data })
             })
-        fetch("http://localhost:8080/user/buylist").then(res => res.json())
+        fetch("http://localhost:8080/user/buylist",{
+            headers:{
+                "Authorization": localStorage.getItem("jwt")
+            }
+        }).then(res => res.json())
             .then(data => {
                 this.setState({ buylist: data }, () => {
                     var temp = []
@@ -51,7 +60,11 @@ class User extends React.Component {
                     this.setState({ buylistCount: temp })
                 })
             })
-        fetch("http://localhost:8080/user/history").then(res => res.json())
+        fetch("http://localhost:8080/user/history",{
+            headers:{
+                "Authorization": localStorage.getItem("jwt")
+            }
+        }).then(res => res.json())
             .then(data => {
                 this.setState({ history: data })
             })
@@ -60,7 +73,11 @@ class User extends React.Component {
     }
 
     showPaymentPage = () => {
-        fetch("http://localhost:8080/user/payment").then(res => res.json())
+        fetch("http://localhost:8080/user/payment",{
+            headers:{
+                "Authorization": localStorage.getItem("jwt")
+            }
+        }).then(res => res.json())
             .then(data => {
                 console.log(data)
                 this.setState({ totalCost: data })
@@ -83,6 +100,9 @@ class User extends React.Component {
         handleCreditIncrease = () => {
             fetch("http://localhost:8080/user/credit?credit=" + this.state.amount, {
                 method: "POST",
+                headers:{
+                    "Authorization": localStorage.getItem("jwt")
+                }
             }).then(response => {
                 if (response.ok) {
                     response.text().then(successMessage => {
@@ -100,6 +120,9 @@ class User extends React.Component {
         handleDiscount = () => {
             fetch("http://localhost:8080/user/discount?discountcode=" + this.state.discode, {
                 method: "POST",
+                headers:{
+                    "Authorization": localStorage.getItem("jwt")
+                }
             }).then(response => {
                 if (!response.ok) {
                     response.text().then(errorMessage => {
@@ -119,6 +142,9 @@ class User extends React.Component {
         handlePayment = () => {
             fetch("http://localhost:8080/user/payment", {
                 method: "POST",
+                headers:{
+                    "Authorization": localStorage.getItem("jwt")
+                }
             }).then(response => {
                 if (response.ok) {
                     response.text().then(successMessage => {

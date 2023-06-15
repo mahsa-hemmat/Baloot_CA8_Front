@@ -20,6 +20,7 @@ import './css/login.css'
 import './css/user.css'
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Callback from './components/callback';
 
 function ProviderHelp(){
     let param=useParams();
@@ -63,6 +64,7 @@ function App() {
                     <Route path="/user" element={<User />} />
                     <Route path="/login" element={<Login handleLogin={handleLogin} />} />
                     <Route path="/signup" element={<Signup />} />
+                    <Route path="/callback" element={<Callback />} />
                     <Route path="/providers/:id" element={<ProviderHelp />} />
                 </Routes>
             </BrowserRouter>

@@ -35,7 +35,11 @@ class Home extends React.Component {
         var keyword=(this.state.search==false)?"":"&keyword="+this.state.searchText;
         var sortType=(this.state.sortBy=="")?"":"sortType="+this.state.sortBy;
         var obj;
-        fetch("http://localhost:8080/commodities?"+sortType+keyword+searchType).then(res => {
+        fetch("http://localhost:8080/commodities?"+sortType+keyword+searchType,{
+            headers:{
+                "Authorization": localStorage.getItem("jwt")
+            }
+        }).then(res => {
             if (!res.ok) {
                 res.text().then(errorMessage => {
                     toast.error(errorMessage);

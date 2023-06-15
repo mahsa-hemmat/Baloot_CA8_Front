@@ -48,6 +48,7 @@ function Product_Info(props) {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
+                            "Authorization": localStorage.getItem("jwt")
                         }}).then(res => {
                         if (!res.ok) {
                             res.text().then(errorMessage => {
@@ -90,6 +91,7 @@ function Comment(props) {
                 <p>{props.like}</p><img onClick={()=>{fetch("http://localhost:8080/comment/" + props.id + "?vote=1", {method: "POST",
                 headers: {
                 "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("jwt")
             }}).then(response => {
                 if (response.ok) {
                     response.text().then(successMessage => {
@@ -106,6 +108,7 @@ function Comment(props) {
                 <p>{props.dislike}</p><img onClick={()=>{fetch("http://localhost:8080/comment/" + props.id + "?vote=-1", {method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": localStorage.getItem("jwt")
                 }}).then(response => {
                 if (response.ok) {
                     response.text().then(successMessage => {
@@ -156,9 +159,12 @@ function Comments(props) {
 class Commodity extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { commodityInfo: {}, id2: "", id: "1", comments: [], suggestion: [], commentText: "",categories:[], rate: 0 }
+        this.state = { commodityInfo: {}, id2: "", id: "20", comments: [], suggestion: [], commentText: "",categories:[], rate: 0 }
         this.setState({ id: props.param.id })
-        fetch("http://localhost:8080/commodities/" + props.param.id)
+        fetch("http://localhost:8080/commodities/" + props.param.id,{
+        headers:{
+            "Authorization": localStorage.getItem("jwt")
+        }})
             .then(res => {
                 if (!res.ok) {
                     res.text().then(errorMessage => {
@@ -177,7 +183,11 @@ class Commodity extends React.Component {
             .catch(error => {
                 console.error(error);
             });
-        fetch("http://localhost:8080/commodities/" + props.param.id + "/comments")
+        fetch("http://localhost:8080/commodities/" + props.param.id + "/comments",{
+            headers:{
+                "Authorization": localStorage.getItem("jwt")
+            }
+        })
             .then(res => {
                 if (!res.ok) {
                     res.text().then(errorMessage => {
@@ -192,7 +202,11 @@ class Commodity extends React.Component {
             .catch(error => {
                 console.error(error);
             })
-        fetch("http://localhost:8080/commodities/" + props.param.id + "/recommended")
+        fetch("http://localhost:8080/commodities/" + props.param.id + "/recommended",{
+            headers:{
+                "Authorization": localStorage.getItem("jwt")
+            }
+        })
             .then(res => {
                 if (!res.ok) {
                     res.text().then(errorMessage => {
@@ -217,7 +231,10 @@ class Commodity extends React.Component {
         console.log(this.state.commentText)
         fetch("http://localhost:8080/comment", {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("jwt")
+        },
             body: JSON.stringify({
                 text: this.state.commentText,
                 commodityId: this.state.id
@@ -253,6 +270,9 @@ class Commodity extends React.Component {
         if(this.state.rate!=0)
         fetch("http://localhost:8080/commodities/"+this.state.id+"?score="+this.state.rate.toString(), {
             method: "POST", 
+            headers:{
+                "Authorization": localStorage.getItem("jwt")
+            }
         }).then(res => {
             if (res.ok) {
                 res.text().then(successMessage => {
